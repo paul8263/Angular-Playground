@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body ng-controller="bodyCtrl">
+    <p>{{number | add: 1:2}}</p>
+    <script src="../angular.min.js"></script>
+    <script>
+        angular.module('app', []).controller('bodyCtrl', function($scope) {
+            $scope.number = 10;
+        }).filter('add', function() {
+            return function(item, arg1, arg2) {
+                return item + arg1 + arg2;
+            }
+        });
+    </script>
+</body>
+</html>

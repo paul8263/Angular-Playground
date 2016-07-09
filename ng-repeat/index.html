@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div ng-init="persons=[{name:'Paul', age:27}, {name:'Mary', age:25}]">
+		<p ng-repeat="person in persons">Name: {{ person.name }}. Age: {{ person.age}}</p>
+	</div>
+
+	<script src="../angular.min.js"></script>
+	<script>
+		angular.module('app', []);
+	</script>
+</body>
+</html>

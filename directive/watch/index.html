@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div ng-controller="bodyController">
+		<p><input type="text" ng-model="data"></p>
+		<p mydirective data="data"></p>
+	</div>
+	<script src="../../angular.min.js"></script>
+	<script>
+		angular.module('app', []).controller('bodyController', function($scope) {
+			$scope.data = 'data';
+		}).directive('mydirective', function(){
+			// Runs during compile
+			return {
+				// name: '',
+				// priority: 1,
+				// terminal: true,
+				scope: {
+					data: "="
+				}, // {} = isolate, true = child, false/undefined = no change
+				// controller: function($scope, $element, $attrs, $transclude) {},
+				// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+				restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
+				// template: '',
+				// templateUrl: '',
+				// replace: true,
+				// transclude: true,
+				// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+				link: function($scope, iElm, iAttrs, controller) {
+
+					// Implementation 1
+					// $scope.$watch($scope.data, function(value) {
+					// 	iElm.text($scope.data);	
+					// });
+
+					// Implementation 2
+					$scope.$watch(iAttrs.data, function(value) {
+						iElm.text($scope.data);
+					});
+									
+				}
+			};
+		});
+		
+	</script>
+</body>
+</html>

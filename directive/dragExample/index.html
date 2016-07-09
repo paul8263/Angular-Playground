@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<dragme>Drag Me</dragme>
+	<script src="../../angular.min.js"></script>
+	<script>
+		angular.module('app', []).directive('dragme', function($document){
+			// Runs during compile
+			return {
+				// name: '',
+				// priority: 1,
+				// terminal: true,
+				// scope: {}, // {} = isolate, true = child, false/undefined = no change
+				// controller: function($scope, $element, $attrs, $transclude) {},
+				// require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+				restrict: 'E', // E = Element, A = Attribute, C = Class, M = Comment
+				// template: '',
+				// templateUrl: '',
+				// replace: true,
+				// transclude: true,
+				// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+				link: function($scope, iElm, iAttrs, controller) {
+					iElm.css({
+						position: 'relative',
+						display: 'inline-block',
+						padding: '3px',
+						border: '1px solid black',
+						backgroundColor: 'gray',
+						color: 'red'
+					});	
+
+					var startX = 0, startY = 0, x = 0, y = 0;
+					iElm.on('mousedown', function(event) {
+						// alert(event.pageX);
+						event.preventDefault();
+						startX = event.pageX - x;
+						startY = event.pageY - y;
+						$document.on('mousemove', mousemove);
+						$document.on('mouseup', mouseup);
+					});
+
+					function mousemove(event) {
+						x = event.pageX - startX;
+						y = event.pageY - startY;
+						iElm.css({
+							left: x + 'px',
+							top: y + 'px'
+						});
+					}
+					function mouseup() {
+						$document.off('mousemove', mousemove);
+						$document.off('mouseup', mouseup);
+					}
+
+				
+				}
+			};
+		});
+		
+	</script>
+</body>
+</html>

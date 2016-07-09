@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body ng-controller="bodyCtrl">
+	<p>{{data}}</p>
+	<p><input type="button" ng-click="changeData()" value="Change"></p>
+	<script src="../angular.min.js"></script>
+	<script>
+		angular.module('app', []).controller('bodyCtrl', function($scope) {
+			$scope.data = "Paul";
+			$scope.changeData = function() {
+				$scope.data = "Mary";
+			};
+		});
+	</script>
+</body>
+</html>

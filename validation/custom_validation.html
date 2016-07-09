@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.ng-invalid-blacklist {
+			border-color: red;
+		}
+
+	</style>
+</head>
+<body ng-controller="bodyCtrl">
+	<input type="text" validation blacklist="['Jim', 'Peter']" ng-model="data.name">
+	<input type="button" ng-click="changeData()" value="Change to abc">
+	<p>{{data}}</p>
+	<script src="../angular.min.js"></script>
+	<script>
+		angular.module('app', []).controller('bodyCtrl', function($scope){
+			$scope.data = {name: 'ABC'};
+			$scope.changeData = function() {
+				$scope.data = {name: 'abc'};
+			};
+
+		}).directive('validation', function(){
+			// Runs during compile
+			return {
+				// name: '',
+				// priority: 1,
+				// terminal: true,
+				// scope: {}, // {} = isolate, true = child, false/undefined = no change
+				// controller: function($scope, $element, $attrs, $transclude) {},
+				require: 'ngModel', // Array = multiple requires, ? = optional, ^ = check parent elements
+				restrict: 'A', // E = Element, A = Attribute, C = Class, M = Comment
+				// template: '',
+				// templateUrl: '',
+				// replace: true,
+				// transclude: true,
+				// compile: function(tElement, tAttrs, function transclude(function(scope, cloneLinkingFn){ return function linking(scope, elm, attrs){}})),
+				link: function($scope, iElm, iAttrs, ngModel) {
+					var blacklist = eval(iAttrs.blacklist);
+					// $parsers: DOM -> Model
+					// $parsers is invoked when the model is modified by the user
+					ngModel.$parsers.push(function(value) {
+						var isValid = blacklist.indexOf(value) === -1;
+						// Determine the css class name
+						// if ngModel.$setValidity('className', isValid)
+						// The css class name will be .ng-valid-classname, .ng-invalid-classname
+						ngModel.$setValidity('blacklist', isValid);
+						// Must return value after validation
+						return value;
+					});
+
+					// $formatters is invoked when the model is modified in the code
+					ngModel.$formatters.push(function(value) {
+						return value.toUpperCase();
+					});
+				}
+			};
+		});
+		
+	</script>
+</body>
+</html>
